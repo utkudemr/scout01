@@ -1,0 +1,10 @@
+﻿<option value="">
+    ...
+</option>
+@if (ViewBag.Takimlar != null)
+{
+    foreach (var item in ViewBag.Takimlar)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

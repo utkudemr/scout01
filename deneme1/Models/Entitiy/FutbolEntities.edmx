@@ -1,0 +1,561 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FutbolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Futbol.dbo.FizikselOzellikler' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FizikselOzellikler">
+          <Key>
+            <PropertyRef Name="Guc" />
+          </Key>
+          <Property Name="Guc" Type="float" Nullable="false" />
+          <Property Name="Hız" Type="float" />
+          <Property Name="Ceviklik" Type="float" />
+          <Property Name="Dayanıklılık" Type="float" />
+          <Property Name="Zıplama" Type="float" />
+          <Property Name="Denge" Type="float" />
+          <Property Name="SporcuId" Type="int" />
+        </EntityType>
+        <EntityType Name="Ligler">
+          <Key>
+            <PropertyRef Name="LiglerId" />
+          </Key>
+          <Property Name="LiglerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Makale">
+          <Key>
+            <PropertyRef Name="MakaleId" />
+          </Key>
+          <Property Name="MakaleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Baslik" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Icerik" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SporcuId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Futbol.dbo.MentalOzellikler' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MentalOzellikler">
+          <Key>
+            <PropertyRef Name="Yetenek" />
+            <PropertyRef Name="Iletisim" />
+            <PropertyRef Name="Kararlılık" />
+            <PropertyRef Name="Konsantrasyon" />
+            <PropertyRef Name="SporcuId" />
+          </Key>
+          <Property Name="Yetenek" Type="float" Nullable="false" />
+          <Property Name="Iletisim" Type="float" Nullable="false" />
+          <Property Name="Kararlılık" Type="float" Nullable="false" />
+          <Property Name="Konsantrasyon" Type="float" Nullable="false" />
+          <Property Name="SporcuId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sporcu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Soyad" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="TakımId" Type="int" Nullable="false" />
+          <Property Name="Dtarihi" Type="date" />
+          <Property Name="Puan" Type="float" Nullable="false" />
+          <Property Name="TiklamaSayisi" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Takim">
+          <Key>
+            <PropertyRef Name="TakimId" />
+          </Key>
+          <Property Name="TakimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="LiglerId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Futbol.dbo.TaktikselOzellikler' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TaktikselOzellikler">
+          <Key>
+            <PropertyRef Name="Pas" />
+            <PropertyRef Name="Shoot" />
+            <PropertyRef Name="Bitiricilik" />
+            <PropertyRef Name="Markaj" />
+            <PropertyRef Name="DuranTop" />
+            <PropertyRef Name="SporcuId" />
+          </Key>
+          <Property Name="Pas" Type="float" Nullable="false" />
+          <Property Name="Shoot" Type="float" Nullable="false" />
+          <Property Name="Bitiricilik" Type="float" Nullable="false" />
+          <Property Name="Markaj" Type="float" Nullable="false" />
+          <Property Name="DuranTop" Type="float" Nullable="false" />
+          <Property Name="SporcuId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FizikselOzellikler_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="0..1" />
+          <End Role="FizikselOzellikler" Type="Self.FizikselOzellikler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FizikselOzellikler">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makale_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="1" />
+          <End Role="Makale" Type="Self.Makale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Makale">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MentalOzellikler_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="1" />
+          <End Role="MentalOzellikler" Type="Self.MentalOzellikler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MentalOzellikler">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sporcu_Takım">
+          <End Role="Takim" Type="Self.Takim" Multiplicity="1" />
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takim">
+              <PropertyRef Name="TakimId" />
+            </Principal>
+            <Dependent Role="Sporcu">
+              <PropertyRef Name="TakımId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Takım_Ligler">
+          <End Role="Ligler" Type="Self.Ligler" Multiplicity="1" />
+          <End Role="Takim" Type="Self.Takim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ligler">
+              <PropertyRef Name="LiglerId" />
+            </Principal>
+            <Dependent Role="Takim">
+              <PropertyRef Name="LiglerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaktikselOzellikler_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="1" />
+          <End Role="TaktikselOzellikler" Type="Self.TaktikselOzellikler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaktikselOzellikler">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FutbolModelStoreContainer">
+          <EntitySet Name="Ligler" EntityType="Self.Ligler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Makale" EntityType="Self.Makale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sporcu" EntityType="Self.Sporcu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Takim" EntityType="Self.Takim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FizikselOzellikler" EntityType="Self.FizikselOzellikler" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FizikselOzellikler].[Guc] AS [Guc], 
+    [FizikselOzellikler].[Hız] AS [Hız], 
+    [FizikselOzellikler].[Ceviklik] AS [Ceviklik], 
+    [FizikselOzellikler].[Dayanıklılık] AS [Dayanıklılık], 
+    [FizikselOzellikler].[Zıplama] AS [Zıplama], 
+    [FizikselOzellikler].[Denge] AS [Denge], 
+    [FizikselOzellikler].[SporcuId] AS [SporcuId]
+    FROM [dbo].[FizikselOzellikler] AS [FizikselOzellikler]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MentalOzellikler" EntityType="Self.MentalOzellikler" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MentalOzellikler].[Yetenek] AS [Yetenek], 
+    [MentalOzellikler].[Iletisim] AS [Iletisim], 
+    [MentalOzellikler].[Kararlılık] AS [Kararlılık], 
+    [MentalOzellikler].[Konsantrasyon] AS [Konsantrasyon], 
+    [MentalOzellikler].[SporcuId] AS [SporcuId]
+    FROM [dbo].[MentalOzellikler] AS [MentalOzellikler]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TaktikselOzellikler" EntityType="Self.TaktikselOzellikler" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TaktikselOzellikler].[Pas] AS [Pas], 
+    [TaktikselOzellikler].[Shoot] AS [Shoot], 
+    [TaktikselOzellikler].[Bitiricilik] AS [Bitiricilik], 
+    [TaktikselOzellikler].[Markaj] AS [Markaj], 
+    [TaktikselOzellikler].[DuranTop] AS [DuranTop], 
+    [TaktikselOzellikler].[SporcuId] AS [SporcuId]
+    FROM [dbo].[TaktikselOzellikler] AS [TaktikselOzellikler]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_FizikselOzellikler_Sporcu" Association="Self.FK_FizikselOzellikler_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="FizikselOzellikler" EntitySet="FizikselOzellikler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makale_Sporcu" Association="Self.FK_Makale_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="Makale" EntitySet="Makale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MentalOzellikler_Sporcu" Association="Self.FK_MentalOzellikler_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="MentalOzellikler" EntitySet="MentalOzellikler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sporcu_Takım" Association="Self.FK_Sporcu_Takım">
+            <End Role="Takim" EntitySet="Takim" />
+            <End Role="Sporcu" EntitySet="Sporcu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Takım_Ligler" Association="Self.FK_Takım_Ligler">
+            <End Role="Ligler" EntitySet="Ligler" />
+            <End Role="Takim" EntitySet="Takim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaktikselOzellikler_Sporcu" Association="Self.FK_TaktikselOzellikler_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="TaktikselOzellikler" EntitySet="TaktikselOzellikler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FutbolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ligler">
+          <Key>
+            <PropertyRef Name="LiglerId" />
+          </Key>
+          <Property Name="LiglerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Takim" Relationship="Self.FK_Takım_Ligler" FromRole="Ligler" ToRole="Takim" />
+        </EntityType>
+        <EntityType Name="Makale">
+          <Key>
+            <PropertyRef Name="MakaleId" />
+          </Key>
+          <Property Name="MakaleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Baslik" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Icerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SporcuId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sporcu" Relationship="Self.FK_Makale_Sporcu" FromRole="Makale" ToRole="Sporcu" />
+        </EntityType>
+        <EntityType Name="Sporcu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Soyad" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TakımId" Type="Int32" Nullable="false" />
+          <Property Name="Dtarihi" Type="DateTime" Precision="0" />
+          <Property Name="Puan" Type="Double" Nullable="false" />
+          <Property Name="TiklamaSayisi" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Makale" Relationship="Self.FK_Makale_Sporcu" FromRole="Sporcu" ToRole="Makale" />
+          <NavigationProperty Name="FizikselOzellikler" Relationship="Self.FK_FizikselOzellikler_Sporcu" FromRole="Sporcu" ToRole="FizikselOzellikler" />
+          <NavigationProperty Name="MentalOzellikler" Relationship="Self.FK_MentalOzellikler_Sporcu" FromRole="Sporcu" ToRole="MentalOzellikler" />
+          <NavigationProperty Name="Takim" Relationship="Self.FK_Sporcu_Takım" FromRole="Sporcu" ToRole="Takim" />
+          <NavigationProperty Name="TaktikselOzellikler" Relationship="Self.FK_TaktikselOzellikler_Sporcu" FromRole="Sporcu" ToRole="TaktikselOzellikler" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Takim">
+          <Key>
+            <PropertyRef Name="TakimId" />
+          </Key>
+          <Property Name="TakimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LiglerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ligler" Relationship="Self.FK_Takım_Ligler" FromRole="Takim" ToRole="Ligler" />
+          <NavigationProperty Name="Sporcu" Relationship="Self.FK_Sporcu_Takım" FromRole="Takim" ToRole="Sporcu" />
+        </EntityType>
+        <EntityType Name="FizikselOzellikler">
+          <Key>
+            <PropertyRef Name="Guc" />
+          </Key>
+          <Property Name="Guc" Type="Double" Nullable="false" />
+          <Property Name="Hız" Type="Double" />
+          <Property Name="Ceviklik" Type="Double" />
+          <Property Name="Dayanıklılık" Type="Double" />
+          <Property Name="Zıplama" Type="Double" />
+          <Property Name="Denge" Type="Double" />
+          <Property Name="SporcuId" Type="Int32" />
+          <NavigationProperty Name="Sporcu" Relationship="Self.FK_FizikselOzellikler_Sporcu" FromRole="FizikselOzellikler" ToRole="Sporcu" />
+        </EntityType>
+        <EntityType Name="MentalOzellikler">
+          <Key>
+            <PropertyRef Name="Yetenek" />
+            <PropertyRef Name="Iletisim" />
+            <PropertyRef Name="Kararlılık" />
+            <PropertyRef Name="Konsantrasyon" />
+            <PropertyRef Name="SporcuId" />
+          </Key>
+          <Property Name="Yetenek" Type="Double" Nullable="false" />
+          <Property Name="Iletisim" Type="Double" Nullable="false" />
+          <Property Name="Kararlılık" Type="Double" Nullable="false" />
+          <Property Name="Konsantrasyon" Type="Double" Nullable="false" />
+          <Property Name="SporcuId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sporcu" Relationship="Self.FK_MentalOzellikler_Sporcu" FromRole="MentalOzellikler" ToRole="Sporcu" />
+        </EntityType>
+        <EntityType Name="TaktikselOzellikler">
+          <Key>
+            <PropertyRef Name="Pas" />
+            <PropertyRef Name="Shoot" />
+            <PropertyRef Name="Bitiricilik" />
+            <PropertyRef Name="Markaj" />
+            <PropertyRef Name="DuranTop" />
+            <PropertyRef Name="SporcuId" />
+          </Key>
+          <Property Name="Pas" Type="Double" Nullable="false" />
+          <Property Name="Shoot" Type="Double" Nullable="false" />
+          <Property Name="Bitiricilik" Type="Double" Nullable="false" />
+          <Property Name="Markaj" Type="Double" Nullable="false" />
+          <Property Name="DuranTop" Type="Double" Nullable="false" />
+          <Property Name="SporcuId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sporcu" Relationship="Self.FK_TaktikselOzellikler_Sporcu" FromRole="TaktikselOzellikler" ToRole="Sporcu" />
+        </EntityType>
+        <Association Name="FK_Takım_Ligler">
+          <End Role="Ligler" Type="Self.Ligler" Multiplicity="1" />
+          <End Role="Takim" Type="Self.Takim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ligler">
+              <PropertyRef Name="LiglerId" />
+            </Principal>
+            <Dependent Role="Takim">
+              <PropertyRef Name="LiglerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Makale_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="1" />
+          <End Role="Makale" Type="Self.Makale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Makale">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FizikselOzellikler_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="0..1" />
+          <End Role="FizikselOzellikler" Type="Self.FizikselOzellikler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FizikselOzellikler">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MentalOzellikler_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="1" />
+          <End Role="MentalOzellikler" Type="Self.MentalOzellikler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MentalOzellikler">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sporcu_Takım">
+          <End Role="Takim" Type="Self.Takim" Multiplicity="1" />
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takim">
+              <PropertyRef Name="TakimId" />
+            </Principal>
+            <Dependent Role="Sporcu">
+              <PropertyRef Name="TakımId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaktikselOzellikler_Sporcu">
+          <End Role="Sporcu" Type="Self.Sporcu" Multiplicity="1" />
+          <End Role="TaktikselOzellikler" Type="Self.TaktikselOzellikler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sporcu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaktikselOzellikler">
+              <PropertyRef Name="SporcuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FutbolEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ligler" EntityType="Self.Ligler" />
+          <EntitySet Name="Makale" EntityType="Self.Makale" />
+          <EntitySet Name="Sporcu" EntityType="Self.Sporcu" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Takim" EntityType="Self.Takim" />
+          <EntitySet Name="FizikselOzellikler" EntityType="Self.FizikselOzellikler" />
+          <EntitySet Name="MentalOzellikler" EntityType="Self.MentalOzellikler" />
+          <EntitySet Name="TaktikselOzellikler" EntityType="Self.TaktikselOzellikler" />
+          <AssociationSet Name="FK_Takım_Ligler" Association="Self.FK_Takım_Ligler">
+            <End Role="Ligler" EntitySet="Ligler" />
+            <End Role="Takim" EntitySet="Takim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Makale_Sporcu" Association="Self.FK_Makale_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="Makale" EntitySet="Makale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FizikselOzellikler_Sporcu" Association="Self.FK_FizikselOzellikler_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="FizikselOzellikler" EntitySet="FizikselOzellikler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MentalOzellikler_Sporcu" Association="Self.FK_MentalOzellikler_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="MentalOzellikler" EntitySet="MentalOzellikler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sporcu_Takım" Association="Self.FK_Sporcu_Takım">
+            <End Role="Takim" EntitySet="Takim" />
+            <End Role="Sporcu" EntitySet="Sporcu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaktikselOzellikler_Sporcu" Association="Self.FK_TaktikselOzellikler_Sporcu">
+            <End Role="Sporcu" EntitySet="Sporcu" />
+            <End Role="TaktikselOzellikler" EntitySet="TaktikselOzellikler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FutbolModelStoreContainer" CdmEntityContainer="FutbolEntity">
+          <EntitySetMapping Name="Ligler">
+            <EntityTypeMapping TypeName="FutbolModel.Ligler">
+              <MappingFragment StoreEntitySet="Ligler">
+                <ScalarProperty Name="LiglerId" ColumnName="LiglerId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Makale">
+            <EntityTypeMapping TypeName="FutbolModel.Makale">
+              <MappingFragment StoreEntitySet="Makale">
+                <ScalarProperty Name="MakaleId" ColumnName="MakaleId" />
+                <ScalarProperty Name="Baslik" ColumnName="Baslik" />
+                <ScalarProperty Name="Icerik" ColumnName="Icerik" />
+                <ScalarProperty Name="SporcuId" ColumnName="SporcuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sporcu">
+            <EntityTypeMapping TypeName="FutbolModel.Sporcu">
+              <MappingFragment StoreEntitySet="Sporcu">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="TakımId" ColumnName="TakımId" />
+                <ScalarProperty Name="Dtarihi" ColumnName="Dtarihi" />
+                <ScalarProperty Name="Puan" ColumnName="Puan" />
+                <ScalarProperty Name="TiklamaSayisi" ColumnName="TiklamaSayisi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FutbolModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Takim">
+            <EntityTypeMapping TypeName="FutbolModel.Takim">
+              <MappingFragment StoreEntitySet="Takim">
+                <ScalarProperty Name="TakimId" ColumnName="TakimId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="LiglerId" ColumnName="LiglerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FizikselOzellikler">
+            <EntityTypeMapping TypeName="FutbolModel.FizikselOzellikler">
+              <MappingFragment StoreEntitySet="FizikselOzellikler">
+                <ScalarProperty Name="Guc" ColumnName="Guc" />
+                <ScalarProperty Name="Hız" ColumnName="Hız" />
+                <ScalarProperty Name="Ceviklik" ColumnName="Ceviklik" />
+                <ScalarProperty Name="Dayanıklılık" ColumnName="Dayanıklılık" />
+                <ScalarProperty Name="Zıplama" ColumnName="Zıplama" />
+                <ScalarProperty Name="Denge" ColumnName="Denge" />
+                <ScalarProperty Name="SporcuId" ColumnName="SporcuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MentalOzellikler">
+            <EntityTypeMapping TypeName="FutbolModel.MentalOzellikler">
+              <MappingFragment StoreEntitySet="MentalOzellikler">
+                <ScalarProperty Name="Yetenek" ColumnName="Yetenek" />
+                <ScalarProperty Name="Iletisim" ColumnName="Iletisim" />
+                <ScalarProperty Name="Kararlılık" ColumnName="Kararlılık" />
+                <ScalarProperty Name="Konsantrasyon" ColumnName="Konsantrasyon" />
+                <ScalarProperty Name="SporcuId" ColumnName="SporcuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaktikselOzellikler">
+            <EntityTypeMapping TypeName="FutbolModel.TaktikselOzellikler">
+              <MappingFragment StoreEntitySet="TaktikselOzellikler">
+                <ScalarProperty Name="Pas" ColumnName="Pas" />
+                <ScalarProperty Name="Shoot" ColumnName="Shoot" />
+                <ScalarProperty Name="Bitiricilik" ColumnName="Bitiricilik" />
+                <ScalarProperty Name="Markaj" ColumnName="Markaj" />
+                <ScalarProperty Name="DuranTop" ColumnName="DuranTop" />
+                <ScalarProperty Name="SporcuId" ColumnName="SporcuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

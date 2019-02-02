@@ -1,0 +1,10 @@
+﻿<option value="">
+    ...
+</option>
+@if (ViewBag.Oyuncular != null)
+{
+    foreach (var item in ViewBag.Oyuncular)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

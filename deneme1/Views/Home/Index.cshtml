@@ -1,0 +1,31 @@
+﻿@model  IEnumerable<deneme1.Models.ViewModel.MakaleIcerikViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+@Scripts.Render("/bundles/jquery")
+@Scripts.Render("/bundles/bootstrap")
+@Scripts.Render("/Content/css")
+
+@*@if (Model != null)
+{
+    <table class="table table-bordered">
+        <thead>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Ad</td>
+                    <td>@item.Soyad</td>
+                    @foreach (var makale in item.Makale)
+                    {
+                        <td>@makale.Baslik</td>
+                        <td>@makale.Icerik</td>
+                    }
+                    <td><a href="#" onclick="editTable(@item.Id)" class="btn btn-primary">İncele</a></td>
+
+                </tr>
+            }
+
+        </thead>
+    </table>
+}*@

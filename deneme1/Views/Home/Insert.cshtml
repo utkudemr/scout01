@@ -1,0 +1,139 @@
+﻿@model deneme1.Models.ViewModel.SporcuViewModel
+@{
+    ViewBag.Title = "Insert";
+}
+@Scripts.Render("/bundles/jquery")
+@Scripts.Render("/bundles/bootstrap")
+@Scripts.Render("/Content/css")
+
+<div class="col-md-9">
+
+    <div class="form-group">
+        <div class="col-md-12">
+            @Html.LabelFor(m => m.LiglerId, "LİGLER", new { @class = "control-label col-md-2" })
+            @if (ViewBag.LeaugeList != null)
+            {
+                @Html.DropDownListFor(m => m.LiglerId, ViewBag.LeaugeList as SelectList, "...", new { @class = "form-control" })
+            }
+            @Html.DropDownListFor(m => m.TakimId, new SelectList(""), "...", new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.Id, new SelectList(""), "...", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            @Html.LabelFor(m => m.Ad, new { @class = "control-label col-md-2" })
+            @Html.TextBoxFor(m => m.Ad, new { @class = "form-control" })
+            
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            @Html.LabelFor(m => m.Soyad, new { @class = "control-label col-md-2" })
+            @Html.TextBoxFor(m => m.Soyad, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            @Html.LabelFor(m => m.Dtarihi, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.TextBoxFor(m => m.Dtarihi, new { htmlAttributes = new { @class = "datepicker" } })
+        </div>
+    </div>
+    <form id="myForm">
+        <div class="form-group">
+            <div class="col-md-12">
+               @Html.TextBoxFor(m=>m.SporcuId)
+                @Html.LabelFor(m => m.Baslik, "Başlık", new { @class = "label label-default" })
+                @Html.TextBoxFor(m => m.Baslik, new { @class = "form-control" })
+                @Html.LabelFor(m => m.Icerik, "İçerik", new { @class = "label label-default" })
+                @Html.TextAreaFor(m => m.Icerik, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <a href="#" class="btn btn-primary" onclick="RegisterFootballer()">Submit</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#LiglerId').change(function () {
+            var liglerId = $(this).val();
+            $.ajax({
+                type: "Post",
+                url: "/Home/GetTakimlar?LigId=" + liglerId,
+                contentType: "html",
+                success: function (response) {
+                    $('#TakimId').empty();
+                    $('#TakimId').append(response);
+                }
+            })
+        })
+
+        $('#TakimId').change(function () {
+            var oyuncuId = $(this).val();
+            $.ajax({
+                type: "Post",
+                url: "/Home/GetOyuncular?TakimId=" + oyuncuId,
+                contentType: "html",
+                success: function (responsed) {
+                    $('#Id').empty();
+                    $('#Id').append(responsed);
+                },
+                error: function () {
+                    alert("saldsa");
+                }
+            })
+        }),
+
+        $('#Id').change(function () {
+                var bilgiler = $(this).val();
+                debugger
+                $.ajax({
+
+                    type: "Post",
+                    url: "/Home/GetBilgiler?OyuncuId=" + bilgiler,
+                    dataType: "json",
+                    success: function (data) {
+                        $('#Ad').val(data.Ad);
+                        $('#Soyad').val(data.Soyad);
+                        $('#SporcuId').val(data.Id);
+                      //  alert(data.Dtarihi);
+                    },
+                    error: function (hata, ajaxOptions, thrownError) {
+                        alert(hata.status);
+                        alert(thrownError);
+                        alert(hata.responseText);
+
+
+                    }
+                })
+            })
+        
+    })
+    var RegisterFootballer = function () {
+        var data = $('#myForm').serialize();
+        $.ajax({
+            type: "Post",
+            url: '/Home/Insert',
+            data: data,
+            success: function (response) {
+                alert(response);
+                window.location('/Home/Index');
+            }
+        })
+    }
+</script>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section scripts{
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(function () {
+        $('.datepicker').datepicker({
+        });
+
+    })
+</script>
+}
